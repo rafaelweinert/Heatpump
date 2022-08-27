@@ -766,10 +766,14 @@ class Heatpump():
 
 
 
-
+        print(data_temp_new.P_e_opt.sum() / data_temp_new.energy_needed_elec.sum())
         return data_temp_new.P_e_opt.sum() / data_temp_new.energy_needed_elec.sum()
 
-        '''
+
+hp = Heatpump()
+hp.get_heating_data()
+
+'''
         """# Optimization with varying period_lim"""
 
         # optimize over vorlauftemp

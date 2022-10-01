@@ -27,7 +27,6 @@ class StationFinder:
 
     def get_latlon(self, address):
         try:
-            print('addresse: ', address)
             location = self.app.geocode(address).raw
             return location
         except:

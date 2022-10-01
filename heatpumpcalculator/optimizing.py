@@ -1,5 +1,5 @@
-import Cons as c
-import Funs
+import constants as c
+import functions
 
 import numpy as np
 import pandas as pd
@@ -14,7 +14,6 @@ class Optimizer:
         self.hp_power_el_opt = hp_power_el_opt
         self.return_flow = return_flow
         self.storage_volume = storage_volume
-
 
 
 # optimize over flowtemp
@@ -57,7 +56,7 @@ class Optimizer:
             else:
                 M_eta = np.triu(M_eta)  # upper diagonal
             P_w_sum = df_per.energy_needed_water.values  # needed energy in water for each hour
-            P_e_max = np.full((per,), c.hp_power_el_opt)  # maximal available energy (electricity) per hour -> e.g. 2500W
+            P_e_max = np.full((per,), self.hp_power_el_opt)  # maximal available energy (electricity) per hour -> e.g. 2500W
             P_e_available = P_e_max.copy()  # at each period still available 'capacity' in electricity for future hours
 
             P_e = np.zeros((per, per))  # Matrix with used energy (e) from each period for each period that is optimized
@@ -142,16 +141,10 @@ class Optimizer:
         ub = self.max_heat_cap
         bounds = Bounds(lb=lb, ub=ub)
 
-        # print('lb: ', lb)
-        # print('ub: ', ub)
 
         min = minimize(target_fun, x0=(lb + 1,), bounds=bounds, constraints={'type': 'ineq',
                                                                              'fun': constraint_fun})
-        # print('period_lim:', period_lim)
-        # print('minimum x: ', min.x[0])
-        # print(min)
 
-        # print()
         M_eta_opt, P_e_opt, P_w_opt, df_per_opt = target_fun(min.x[0],
                                                              optimizing=False)  # get values for optimal heating temperature
 
@@ -165,7 +158,7 @@ class Optimizer:
         P_e_new = np.zeros((df.shape[0], df.shape[0]))
         P_w_new = np.zeros((df.shape[0], df.shape[0]))
         for p in df.period_max.dropna().unique():
-            print('period: ', p)
+            print('period: ', int(p), f' / {int(max(df.period_max.dropna()))}', end='\r')
 
             min_df = pd.DataFrame(columns=['period_lim', 'min_x', 'min_fun'])
 
@@ -197,5 +190,6 @@ class Optimizer:
             P_w_new[index:index + P_w_opt.shape[0], index:index + P_w_opt.shape[1]] = P_w_opt
 
             index = df_per_opt[df_per_opt.Storage_vol == 0].Storage_vol.index[-1] + 1
+        print()
         return M_eta_new, P_e_new, P_w_new, df_new
 

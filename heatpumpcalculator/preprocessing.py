@@ -1,5 +1,5 @@
-from Funs import Functions
-import Cons as c
+from functions import Functions
+import constants as c
 
 import numpy as np
 import pandas as pd

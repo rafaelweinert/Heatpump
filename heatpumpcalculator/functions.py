@@ -1,4 +1,4 @@
-import Cons as c
+import constants as c
 
 import numpy as np
 

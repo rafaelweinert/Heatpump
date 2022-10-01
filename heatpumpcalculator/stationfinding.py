@@ -27,12 +27,13 @@ class StationFinder:
 
     def get_latlon(self, address):
         try:
+            print('addresse: ', address)
             location = self.app.geocode(address).raw
             return location
         except:
-            print('Not found')
-            time.sleep(1)
-            return 0
+            print('Address not found! Retry with a different address.')
+
+            exit()
 
     def get_closest_station(self, lat, long):
         dist = np.sqrt(np.square(self.data.geoBreite - lat) + np.square(self.data.geoLaenge - long))
@@ -51,8 +52,8 @@ class StationFinder:
 
     def main(self):
         location = self.get_latlon(self.address)
-        lat, lon = float(location['lat']), float(location['lon'])
 
+        lat, lon = float(location['lat']), float(location['lon'])
         closest_station_idx = self.get_closest_station(lat, lon)[0]
         closest_station = int(self.data.loc[closest_station_idx, 'Stations_id'])
 

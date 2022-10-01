@@ -20,7 +20,7 @@ type(data.geoLaenge[0])
 
 #%%
 
-address = 'Rintheimer Straße 84, 76131 Karlsruhe, Germany'
+address = input('Region: ')
 app = Nominatim(user_agent="user")
 def get_latlon(address):
     try:
@@ -56,4 +56,6 @@ def get_station_data(station_ids):
                 return pd.read_table(r"C:\Users\rafaelweinert\PycharmProjects\Wärmepumpe\data\weatherstationdata" + '\\' + entry, sep=';')
     return 'No data found'
 
-data_temp = get_station_data([5100])
+data_temp = get_station_data([closest_station])
+
+print(data_temp)

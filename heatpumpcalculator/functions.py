@@ -6,6 +6,7 @@ import numpy as np
 class Functions:
 
     def __init__(self, flow_max, room_temp, out_min, return_flow, house_energy, storage_volume, storage_power, ny):
+
         self.flow_max = flow_max
         self.room_temp = room_temp
         self.out_min = out_min
@@ -18,8 +19,9 @@ class Functions:
         self.coef_h = (self.storage_power / (c.h2o_energy * self.storage_volume)) / np.abs(c.t_env - c.t_0)
 
     def flowtemp(self, t):
-        return - (self.flow_max - self.room_temp) / (self.room_temp-self.out_min) *t + self.flow_max + self.out_min * (self.flow_max - self.room_temp) / (self.room_temp-self.out_min)
-
+        flow =  - (self.flow_max - self.room_temp) / (self.room_temp-self.out_min) *t + self.flow_max + self.out_min * (self.flow_max - self.room_temp) / (self.room_temp-self.out_min)
+        flow[flow <= self.return_flow] = self.return_flow + 0.01
+        return flow
     def needed_house_energy(self, t):
         return np.maximum(0, self.room_temp - t) * self.house_energy # returns needed energy to heat house in Watt
 

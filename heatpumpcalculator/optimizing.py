@@ -40,7 +40,7 @@ class Optimizer:
 
         def target_fun(fl, optimizing=True, constraint=False):
 
-            M_eta = self.f.eta_freezing_adj(zu=M_temperature, max_ab=M_flow)  # , min_ab=M_flow)
+            M_eta = self.f.eta_freezing_adj(zu=M_temperature, max_ab=M_flow, heating=c.h)  # , min_ab=M_flow)
 
             if type(period_lim) != type(None):  # period_lim also means storage limitation
                 per_lim = np.minimum(period_lim, per)
@@ -137,12 +137,12 @@ class Optimizer:
                     return 'Must enter a temperature'
 
         # optimization problem
-        lb = max(flow) + 0.001
+        lb = flow.mean() + 0.001
         ub = self.max_heat_cap
         bounds = Bounds(lb=lb, ub=ub)
 
 
-        min = minimize(target_fun, x0=(lb + 1,), bounds=bounds, constraints={'type': 'ineq',
+        min = minimize(target_fun, x0=(lb + 0.01,), bounds=bounds, constraints={'type': 'ineq',
                                                                              'fun': constraint_fun})
 
         M_eta_opt, P_e_opt, P_w_opt, df_per_opt = target_fun(min.x[0],

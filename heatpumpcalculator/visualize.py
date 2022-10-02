@@ -6,7 +6,7 @@ pio.templates.default = "plotly"
 
 def plot_temperature(df, extrema = False):
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df.date, y=df.temperature, name='temperature'))
+    fig.add_trace(go.Scatter(x=df.date, y=df.temperature, name='Temperature in °C'))
     fig.update_layout(dict1={'title': 'temperature'})
     if extrema:
         fig.add_trace(go.Scatter(x=df.date, y=df.local_min, mode='markers', name='local_minima'))
@@ -25,7 +25,7 @@ def plot_heatmap(matrix):
 
 def plot_optimization(df):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(go.Scatter(x=df.date, y=df.temperature, name='temperature', mode='lines'),
+    fig.add_trace(go.Scatter(x=df.date, y=df.temperature, name='Temperature', mode='lines'),
                   secondary_y=False)
     fig.add_trace(go.Scatter(x=df.date, y=df.P_e_opt, name='Power (e) optimized', mode='markers'),
                   secondary_y=True)
@@ -38,4 +38,4 @@ def plot_optimization(df):
                   secondary_y=False)
     fig.add_trace(go.Scatter(x=df.date, y=df.flow_temp, name='Flow temperature'), secondary_y=False)
     fig.update_layout(title='Power (elec) for optimized and not optimized heating')
-    fig.write_html('optimization_data_temp.html', auto_open=False)
+    return fig

@@ -11,9 +11,9 @@ freezing_factor = 1.2# factor which the efficiency coefficient is divided by in 
 
 #20 and 60 after some DIN-Norms
 t_env = kelvin(20) #environmental temperature where water storage is located
-t_0 = kelvin(60) #temperature at which water storage power is measured
+t_0 = kelvin(65) #temperature at which water storage power is measured
 
 h2o_energy = 4200 #Joule / (kilogram * Kelvin)
 
 # Loefflers heating formula
-h = True
+h = False

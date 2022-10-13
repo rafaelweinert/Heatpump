@@ -40,16 +40,28 @@ class Functions:
             print("Error: function 'eta_heating'")
         return self.ny * (c.kelvin(zu) * np.log((c.kelvin(max_ab) - c.kelvin(zu)) / (c.kelvin(min_ab) - c.kelvin(zu))) + c.kelvin(max_ab) - c.kelvin(min_ab)) / (c.kelvin(max_ab) - c.kelvin(min_ab))
 
-    def eta_heating2(self, zu, return_flow, max_ab = None, min_ab=None, ):
+    def eta_heating2(self, zu, max_ab = None, min_ab=None, ):
         try:
             if type(min_ab) == type(None):
-                min_ab = return_flow
+                min_ab = self.return_flow
             if type(max_ab) == type(None):
                 max_ab = self.flowtemp(zu)
         except:
             print("Error: function 'eta_heating'")
 
         return self.ny * ((c.kelvin(max_ab) - c.kelvin(min_ab)) / (c.kelvin(max_ab) - c.kelvin(min_ab) - c.kelvin(zu) * np.log(c.kelvin(max_ab) / c.kelvin(min_ab))))
+
+    def eta_heating3(self, zu, max_ab = None, min_ab=None, ): # uses an average of maximum and minimum temperature
+        try:
+            if type(min_ab) == type(None):
+                min_ab = self.return_flow
+            if type(max_ab) == type(None):
+                max_ab = self.flowtemp(zu)
+        except:
+            print("Error: function 'eta_heating'")
+
+        ab_new = (max_ab + min_ab) / 2
+        return np.maximum(0, np.minimum(300, self.ny * c.kelvin(ab_new) / (c.kelvin(ab_new)-c.kelvin(zu))))
 
     def eta_freezing_adj(self, zu, max_ab = None, min_ab = None, heating =  False): # if heating = True, then use eta_heating
         try:
@@ -61,7 +73,7 @@ class Functions:
             print("Error: function 'eta_heating'")
 
         if heating == True:
-            e = self.eta_heating2(zu, max_ab, min_ab)
+            e = self.eta_heating3(zu, max_ab, min_ab)
         else:
             e = self.eta(zu, max_ab)
         #print(type(eta))
@@ -75,10 +87,6 @@ class Functions:
 
     def newton_cooling(self, t):
         return c.t_env + (c.t_0 - c.t_env) * np.exp(-self.coef_h * t)  # = temperature at time t
-
-    def newton_cooling_t_0(self, temp_t, t=7 * 3600):  # enter in Kelvin
-        # return ((temp_t - t_env) * np.exp((coef_h * t).T)).T + t_env #returns t_0 for fix temperature after time t
-        return (temp_t - c.t_env) * np.exp((self.coef_h * t)) + c.t_env  # returns t_0 for fix temperature after time t
 
     def newton_cooling_t_0(self, temp_t, t=7 * 3600):  # enter in Kelvin
         # return ((temp_t - t_env) * np.exp((coef_h * t).T)).T + t_env #returns t_0 for fix temperature after time t

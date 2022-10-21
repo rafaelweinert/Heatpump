@@ -41,11 +41,6 @@ class StationFinder:
 
         return min_dist
 
-    def get_closest_try(self, lat, long):
-        dist = np.sqrt(np.square(self.try_data.geoBreite - lat) + np.square(self.try_data.geoLaenge - long))
-        min_dist = np.argsort(dist)
-
-        return min_dist
 
     #assume data is downloaded already
     def get_station_data(self, station_ids):

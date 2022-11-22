@@ -105,7 +105,7 @@ class StationFinder:
         data.temperature = data.temperature.astype(float)
         data = data.sort_values(by='date')
 
-        data = data[(data.date >= pd.to_datetime('2022-10-01')) & (data.date <= pd.to_datetime('2023-03-31'))]
+        data = data[(data.date >= pd.to_datetime('2022-10-01')) & (data.date <= pd.to_datetime('2023-04-30'))]
         data.reset_index(inplace=True, drop=True)
 
         return data

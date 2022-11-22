@@ -61,7 +61,7 @@ class Functions:
             print("Error: function 'eta_heating'")
 
         ab_new = (max_ab + min_ab) / 2
-        return np.maximum(0, np.minimum(300, self.ny * c.kelvin(ab_new) / (c.kelvin(ab_new)-c.kelvin(zu))))
+        return np.maximum(0, self.ny * c.kelvin(ab_new) / (c.kelvin(ab_new)-c.kelvin(zu)))
 
     def eta_freezing_adj(self, zu, max_ab = None, min_ab = None, heating =  False): # if heating = True, then use eta_heating
         try:

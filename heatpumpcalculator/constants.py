@@ -15,5 +15,4 @@ t_0 = kelvin(65) #temperature at which water storage power is measured
 
 h2o_energy = 4200 #Joule / (kilogram * Kelvin)
 
-# Loefflers heating formula
-h = False
+h = True

@@ -137,14 +137,16 @@ class Optimizer:
                     return 'Must enter a temperature'
 
         # optimization problem
-        lb = flow.mean() + 0.001
+        lb = flow.max()
         ub = self.max_heat_cap
         bounds = Bounds(lb=lb, ub=ub)
 
-
-        min = minimize(target_fun, x0=(lb + 0.01,), bounds=bounds, constraints={'type': 'ineq',
+        try:
+            min = minimize(target_fun, x0=(lb,), bounds=bounds, constraints={'type': 'ineq',
                                                                              'fun': constraint_fun})
-
+        except:
+            print('ub:', ub)
+            print('lb:', lb)
         M_eta_opt, P_e_opt, P_w_opt, df_per_opt = target_fun(min.x[0],
                                                              optimizing=False)  # get values for optimal heating temperature
 

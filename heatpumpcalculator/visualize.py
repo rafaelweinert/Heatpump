@@ -11,7 +11,7 @@ def plot_temperature(df, address, extrema = False):
     if extrema:
         fig.add_trace(go.Scatter(x=df.date, y=df.local_min, mode='markers', name='local_minima'))
         fig.add_trace(go.Scatter(x=df.date, y=df.local_max, mode='markers', hovertext=df.period_max, name='local_maxima'))
-        fig.add_trace(go.Scatter(x=df.date, y=df.flow_temp, name='Flow temperature in [°C]'))
+        #fig.add_trace(go.Scatter(x=df.date, y=df.flow_temp, name='Flow temperature in [°C]'))
     #print(type(fig))
     return fig
 
